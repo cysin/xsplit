@@ -2,7 +2,7 @@
 
 something about double array trie tree with xsplit and text similarity calculation
 
-之前发布了一个PHP的分词扩展xsplit(http://code.google.com/p/xsplit)，只是在主页简单说了一下用法，下面再做点实用解释，不讲理论。
+之前发布了一个PHP的分词扩展xsplit( http://code.google.com/p/xsplit )，只是在主页简单说了一下用法，下面再做点实用解释，不讲理论。
 
 xsplit的分词实际上主要是基于双数组trie树的结构，算是trie树的一个变种，常用做搜索树，也是一种确定有限自动机（deterministic finite automaton）。顾名思义，双数组trie树利用数组保存状态，效率也更高一些（数组的操作效率比复杂的数据结构高）。trie树一般在NLP（natural language processing）用的较多一些。
 
@@ -30,7 +30,7 @@ $result=xs_search('中华人民共和国', XS_SEARCH_EM);
 
 这些都可以参考Google的一篇论文： http://research.google.com/pubs/archive/33026.pdf
 
-传统的hash算法，同样的数据或者同样的文本，可以得到相同的一个hash value，这对于检查文本是否完全相同比较方便。但是对于相似的文本，比如两段文字，他们只是少量的个别词语不同，如何计算相似度就比较麻烦了。而simhash的作用就是，相似的文本会有一个相似的hash value，这里的相似不是说他们的大小差不多，而是hamming distance很小。关于hamming distance，汉明距离，可以看一下百度百科的解释 http://baike.baidu.com/view/725269.html，不难理解。
+传统的hash算法，同样的数据或者同样的文本，可以得到相同的一个hash value，这对于检查文本是否完全相同比较方便。但是对于相似的文本，比如两段文字，他们只是少量的个别词语不同，如何计算相似度就比较麻烦了。而simhash的作用就是，相似的文本会有一个相似的hash value，这里的相似不是说他们的大小差不多，而是hamming distance很小。关于hamming distance，汉明距离，可以看一下百度百科的解释 http://baike.baidu.com/view/725269.html ，不难理解。
 
 实际上，simhash在计算的时候，需要将文本tokenize（呃我现在也不知道tokenize中文里到底怎么理解好，分词？分解？）。英文一般就是按照空格分开，中文的话还是需要分词，如果按照单个汉字来计算，效果很不理想，这个我都有实验过。中文除了分词，还需要将无用的标点符号，特殊符号等等都去掉，这些对simhash的计算都有影响。另外，simhash在计算的时候，还支持每个token设定权重，比如在中文里就是给某些关键词设定较高的权重，我试了之后发现效果似乎不升反降，所以在xsplit里每一个token的权重都是相同的。这也是我为什么把simhash的相关计算函数放在一个分词扩展里的。
 
